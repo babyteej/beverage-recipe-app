@@ -1,0 +1,518 @@
+# === FRUITS — Citrus ===
+Lemon
+Lime
+Orange (navel)
+Orange (blood)
+Grapefruit (pink)
+Grapefruit (white)
+Mandarin
+Tangerine
+Yuzu
+Bergamot
+Kumquat
+Pomelo
+Calamansi
+Finger lime
+Buddha's hand
+Kaffir lime
+
+# === FRUITS — Pome & Stone ===
+Apple (green)
+Apple (red)
+Apple (heirloom varieties)
+Pear (Bartlett)
+Pear (Asian)
+Quince
+Peach
+Nectarine
+Plum (black)
+Plum (Damson)
+Apricot
+Cherry (sweet)
+Cherry (tart/Montmorency)
+Loquat
+Medlar
+
+# === FRUITS — Berries ===
+Blueberry
+Strawberry
+Raspberry (red)
+Raspberry (black)
+Blackberry
+Mulberry
+Boysenberry
+Gooseberry
+Cranberry
+Lingonberry
+Cloudberry
+Elderberry
+Black currant
+Red currant
+White currant
+Sea buckthorn berry
+Goji berry (fresh and dried)
+Aronia (chokeberry)
+Bilberry
+Açaí
+Maqui berry
+Camu camu
+Schisandra berry
+Honeysuckle berry
+Salmonberry
+
+# === FRUITS — Tropical & Exotic ===
+Pineapple
+Mango (Alphonso)
+Mango (Ataulfo)
+Papaya
+Passionfruit
+Guava (pink)
+Guava (white)
+Dragon fruit (white)
+Dragon fruit (pink)
+Lychee
+Longan
+Rambutan
+Mangosteen
+Durian
+Jackfruit
+Breadfruit
+Soursop (graviola)
+Cherimoya
+Sapote
+Star fruit (carambola)
+Persimmon (Fuyu)
+Persimmon (Hachiya)
+Tamarind
+Kiwi (green)
+Kiwi (golden)
+Feijoa
+Yuzu
+Noni
+Açaí
+Cupuaçu
+Açerola (Barbados cherry)
+Jabuticaba
+
+# === FRUITS — Melons ===
+Watermelon
+Cantaloupe
+Honeydew
+Galia melon
+Charentais melon
+Bitter melon
+
+# === FRUITS — Grapes & Vine ===
+Grape (red wine varieties)
+Grape (green/Thompson)
+Grape (Concord)
+Muscadine
+
+# === FRUITS — Stone & Tropical Drupes ===
+Banana
+Plantain
+Coconut (water)
+Coconut (meat)
+Date (Medjool)
+Date (Deglet Noor)
+Fig (black mission)
+Fig (brown turkey)
+Olive (green, brined)
+Olive (kalamata)
+
+# === FRUITS — Pomegranate & Related ===
+Pomegranate
+Rose hip
+
+# === VEGETABLES — Leafy Greens ===
+Kale (lacinato/dinosaur)
+Kale (curly)
+Kale (red Russian)
+Spinach (baby)
+Spinach (mature)
+Swiss chard (rainbow)
+Swiss chard (red)
+Collard greens
+Mustard greens
+Turnip greens
+Beet greens
+Dandelion greens
+Arugula
+Watercress
+Romaine lettuce
+Butter lettuce
+Red leaf lettuce
+Endive
+Radicchio
+Frisée
+Mâche (lamb's lettuce)
+Sorrel
+Purslane
+Amaranth leaves
+Moringa leaves
+Pea shoots
+Sunflower microgreens
+Broccoli sprouts
+Alfalfa sprouts
+Radish sprouts
+Mung bean sprouts
+
+# === VEGETABLES — Stalk, Bulb & Stem ===
+Celery
+Fennel bulb
+Asparagus
+Rhubarb
+Cardoon
+Bok choy
+Napa cabbage
+Green cabbage
+Red cabbage
+Savoy cabbage
+Brussels sprouts
+Kohlrabi
+
+# === VEGETABLES — Root & Tuber ===
+Carrot (orange)
+Carrot (purple)
+Carrot (yellow)
+Beetroot (red)
+Beetroot (golden)
+Beetroot (chioggia)
+Parsnip
+Turnip
+Rutabaga
+Radish (red)
+Radish (daikon)
+Radish (watermelon)
+Horseradish
+Jicama
+Lotus root
+Burdock root
+Yacon
+Sweet potato (orange)
+Sweet potato (purple)
+Cassava
+Taro
+
+# === VEGETABLES — Fruiting & Allium ===
+Tomato (heirloom)
+Tomato (cherry)
+Bell pepper (red)
+Bell pepper (yellow)
+Cucumber (English)
+Cucumber (Persian)
+Zucchini
+Yellow squash
+Butternut squash
+Kabocha squash
+Pumpkin
+Garlic
+Onion (red)
+Onion (yellow)
+Onion (white)
+Shallot
+Leek
+Scallion
+Chive
+
+# === VEGETABLES — Cruciferous ===
+Broccoli
+Cauliflower
+Romanesco
+
+# === HERBS — Culinary & Fresh ===
+Basil (sweet)
+Basil (Thai)
+Basil (lemon)
+Cilantro
+Parsley (flat-leaf)
+Parsley (curly)
+Mint (peppermint)
+Mint (spearmint)
+Mint (chocolate)
+Dill
+Tarragon
+Chervil
+Marjoram
+Oregano (Greek)
+Oregano (Mexican)
+Thyme
+Rosemary
+Sage (common)
+Sage (white)
+Bay leaf
+Curry leaf
+Pandan leaf
+Lemongrass
+Lemon verbena
+Lemon balm
+Lavender (culinary)
+
+# === HERBS — Medicinal ===
+Tulsi (holy basil — Rama)
+Tulsi (holy basil — Krishna)
+Tulsi (holy basil — Vana)
+Stinging nettle
+Plantain leaf
+Yarrow
+Mugwort
+Wormwood
+Sage (red)
+Hyssop
+Skullcap
+Motherwort
+Passionflower
+Damiana
+Mucuna pruriens
+Gotu kola
+Brahmi (Bacopa)
+Ashwagandha
+Shatavari
+Tribulus
+Maca
+Schisandra
+Rhodiola
+Eleuthero (Siberian ginseng)
+Ginseng (Asian/Panax)
+Ginseng (American)
+Astragalus
+He shou wu (Fo-ti)
+Reishi
+Codonopsis
+Jiaogulan
+Holy thistle
+Milk thistle
+Burdock leaf
+Comfrey leaf
+Cleavers
+Calendula
+Echinacea (purpurea)
+Echinacea (angustifolia)
+Goldenseal
+Oregon grape root
+Yellow dock
+Blue vervain
+Bitter melon leaf
+
+# === SPICES & SEEDS ===
+Black pepper
+White pepper
+Long pepper (pippali)
+Pink peppercorn
+Sichuan pepper
+Grains of Paradise
+Selim pepper
+Cubeb pepper
+Coriander seed
+Cumin seed
+Fennel seed
+Caraway seed
+Anise seed
+Star anise
+Nigella (black seed)
+Fenugreek seed
+Mustard seed (yellow)
+Mustard seed (brown)
+Mustard seed (black)
+Celery seed
+Dill seed
+Cardamom (green)
+Cardamom (black)
+Cardamom (white)
+Saffron
+Sumac
+Vanilla bean
+
+# === SEEDS — Functional ===
+Chia seed
+Hemp seed (hulled)
+Flax seed (golden)
+Flax seed (brown)
+Sesame seed (white)
+Sesame seed (black)
+Pumpkin seed
+Sunflower seed
+Poppy seed
+
+# === GRAINS & FUNCTIONAL BASES ===
+Oats (rolled)
+Oats (steel-cut)
+Barley
+Quinoa
+Millet
+Buckwheat
+Amaranth
+Tigernut
+
+# === ROOTS & RHIZOMES ===
+Ginger (yellow/common)
+Ginger (white)
+Galangal
+Fingerroot (krachai)
+Turmeric (yellow)
+Turmeric (white)
+Turmeric (black)
+Licorice root
+Marshmallow root
+Slippery elm bark
+Sarsaparilla
+Sassafras
+Yellow dock root
+Dandelion root
+Chicory root
+Burdock root
+Angelica root
+Lovage root
+Valerian root
+Kava
+Kratom (informational only — schedule per region)
+Cat's claw bark/root
+
+# === BARKS, RESINS, SAPS ===
+Cinnamon (Ceylon)
+Cinnamon (Cassia)
+Cinnamon (Saigon)
+Pau d'arco bark
+Cramp bark
+White willow bark
+Wild cherry bark
+Quebracho bark
+Mastic resin
+Frankincense (Boswellia)
+Myrrh
+Pine resin
+Birch sap
+Maple sap
+Palm sap (neera)
+Agave nectar
+Date syrup
+Honey (raw)
+Honey (manuka)
+Propolis
+Bee pollen
+
+# === FLOWERS — Culinary & Tea ===
+Chamomile (German)
+Chamomile (Roman)
+Lavender (English)
+Rose petal (Damascena)
+Rose petal (Centifolia)
+Hibiscus
+Elderflower
+Linden flower
+Jasmine flower
+Osmanthus
+Magnolia bud
+Honeysuckle
+Chrysanthemum
+Calendula
+Butterfly pea
+Blue lotus
+Pink lotus
+Saffron crocus
+Violet
+Pansy
+Borage flower
+Squash blossom
+Mallow flower
+Cornflower
+Yarrow flower
+
+# === MUSHROOMS — Functional ===
+Reishi (red)
+Reishi (black)
+Chaga
+Lion's mane
+Cordyceps militaris
+Cordyceps sinensis
+Turkey tail
+Maitake
+Shiitake
+Tremella
+Agarikon
+Mesima
+Poria
+Polyporus
+Phellinus
+
+# === ALGAE & AQUATIC ===
+Spirulina
+Chlorella
+Blue-green algae (AFA)
+Sea moss (Irish moss)
+Bladderwrack
+Kelp
+Wakame
+Nori
+Dulse
+Kombu
+
+# === FERMENTED BASES & STARTERS ===
+Kombucha SCOBY (culture, not consumed directly)
+Water kefir grains (culture)
+Milk kefir grains (culture)
+Jun culture
+Tepache base (pineapple skin)
+Kvass base (rye, beet)
+Rejuvelac base (sprouted grain)
+Apple cider vinegar (raw)
+Coconut vinegar
+Umeboshi vinegar
+Shrub vinegar bases
+
+# === REGIONAL & UNDERREPRESENTED ===
+Baobab fruit pulp
+Moringa leaf
+Moringa seed
+Mamaki leaf
+Yerba mate
+Guayusa
+Yaupon holly
+Cascara (coffee cherry husk)
+Coffee leaf
+Cacao nib
+Cacao husk
+Carob
+Mesquite
+Lucuma
+Maca (yellow)
+Maca (red)
+Maca (black)
+Sacha inchi
+Camu camu
+Açaí
+Cupuaçu
+Pitanga (Surinam cherry)
+Jabuticaba
+
+# === BITTERS & DIGESTIVES (traditional botanicals) ===
+Gentian root
+Angelica root
+Wormwood
+Centaury
+Mugwort
+Devil's claw
+Boldo leaf
+Quassia
+Andrographis
+
+# === ADDITIONAL OVERLOOKED ===
+Nasturtium leaf and flower
+Wood sorrel
+Fireweed
+Pine needle (Eastern white)
+Spruce tip
+Cedar tip
+Juniper berry
+Hawthorn berry
+Hawthorn flower
+Rowan berry
+Sea buckthorn leaf
+Tulsi seed
+Black walnut hull
+Cherokee Rose hip
+Wild cherry
+Spicebush berry
+Sassafras root bark
+Bayberry
+Sweetgale

@@ -1,0 +1,24 @@
+# Smoothie liquid bases — subcategory: liquid_base, beverage_types: smoothie
+# Neutral & dairy/plant milks
+Filtered water
+Coconut water
+Almond milk (unsweetened)
+Oat milk (unsweetened)
+Coconut milk (light)
+Cashew milk (unsweetened)
+Soy milk (unsweetened)
+Hemp milk (unsweetened)
+Flax milk (unsweetened)
+Plain kefir
+# Protein & collagen
+Whey protein shake (plain, prepared)
+Pea protein shake (plain, prepared)
+Collagen peptide drink (unflavored, prepared)
+Bone broth (low-sodium)
+# Functional juices & teas
+Tart cherry juice (unsweetened)
+Pomegranate juice (unsweetened)
+Beet juice
+Aloe vera juice (inner leaf)
+Green tea (brewed, cooled)
+Matcha (prepared)

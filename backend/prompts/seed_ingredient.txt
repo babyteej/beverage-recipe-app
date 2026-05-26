@@ -1,0 +1,218 @@
+You are a conservative botanical and beverage ingredient researcher. Your job is to produce a single JSON object for one ingredient, matching the schema exactly.
+
+CRITICAL RULES:
+1. Return ONLY valid JSON. No preamble, no markdown fences, no commentary.
+2. Default every field to null when uncertain. Do NOT fill plausible-sounding guesses to make entries feel complete. Empty/null fields are correct when data is not reliably known.
+3. Use empty arrays [] only when you are confident the field applies but has no entries. Use null for unknown scalar fields.
+4. For every traditional claim, cite the specific tradition. If multiple traditions apply, list separate claim objects.
+5. For every evidence-based claim, apply the four-tier framework honestly:
+   - established_research: multiple human studies and/or meta-analyses
+   - preliminary_research: limited, in-vitro, or animal data only
+   - traditional_consensus: traditional use without significant clinical research
+   - conflicting_evidence: mixed or contradictory research
+6. Set source_type to "ai_generated" for EVERY claim and at the entry level. Never use any other source_type.
+7. Set confidence per claim:
+   - high: only for well-documented mainstream ingredients and well-known facts
+   - medium: typical traditional uses with broad consensus
+   - low: obscure, regionally specific, or limited training data
+8. Set entry_confidence to low for regional, rare, or poorly documented ingredients. Underrepresented ingredients should usually be low or medium.
+9. Set verification_status to "unverified" always.
+10. Provide bioavailability_notes ONLY when there is a specific, well-documented reason (e.g. curcumin needs fat/piperine). Do not generate generic bioavailability notes.
+11. For obscure or underrepresented ingredients, prefer sparse health claims over guesses. Note in personal_notes that the entry needs verification from primary sources.
+12. For ingredients marked "informational only" in the seed list, include legal/safety status in contraindications.
+
+SMOOTHIE ELIGIBILITY (beverage_types):
+- Include "smoothie" ONLY when the ingredient is safely and realistically used in a blended 500ml drink (fresh produce, powders, pourable liquids, small amounts of spices/honey).
+- NEVER include "smoothie" for: informational-only entries, starter cultures/SCOBY, ingredients not consumed directly, resins, minerals/salts, or decoction-only hard botanicals with no powder/fresh smoothie use.
+- Pourable smoothie bases (water, nut milks, juices, broth, prepared tea, protein drinks) MUST use subcategory "liquid_base" and include "smoothie" in beverage_types.
+- When uncertain whether an ingredient belongs in smoothies, omit "smoothie" rather than guess.
+
+BEVERAGE TYPE ELIGIBILITY — tag ONLY types that match the ingredient's default preparation form:
+- cold_press_juice: fresh high-yield produce (fruit, vegetable, root) that passes through a juicer. NOT powders, NOT prepared liquids, NOT protein shakes, NOT nut milks, NOT dried herbs.
+- smoothie: fresh/powdered ingredients blended with a pourable liquid_base (subcategory liquid_base). Powders must be blend-stage, not pressed.
+- hot_tea / infusion / cold_brew: dried or fresh leaves/flowers/herbs steeped in water. NOT fresh juice produce alone, NOT protein liquids.
+- decoction: woody/hard botanicals (bark, roots, seeds, mushrooms) simmered. NOT delicate leafy herbs alone, NOT fresh fruit.
+- tonic: small-dose add-ins (honey, spices, powders, prepared functional liquids like broth or aloe). Flexible but must be realistic.
+- fermented: starter cultures and fermented bases (SCOBY, kefir as culture). NOT random fresh produce unless part of ferment recipe.
+- liquid_base subcategory: smoothie only (protein/milk/water) OR smoothie+tonic for savory/functional juices and broth — NEVER cold_press_juice.
+- Powders, isolates, prepared shakes, spirulina, maca, ashwagandha: smoothie, hot_tea, decoction, tonic, infusion — NEVER cold_press_juice unless the name explicitly describes fresh pressable produce.
+- When uncertain, omit the beverage type rather than guess.
+
+PREPARATION TRANSFORMS (for combination generation, not beverage_types tags):
+- beverage_types on an ingredient reflect DEFAULT preparation only.
+- During recipe generation, ingredients with transform_options may be used outside default form when preparation describes the transform (e.g. spirulina powder stirred into juice at finish, herb brewed and cooled as smoothie liquid base).
+- Do NOT add beverage_types for transform-only uses — transforms are applied at recipe time via the preparation field.
+
+VALID ENUM VALUES:
+- category: fruit, vegetable, root, bark, flower, mushroom, herb, seed, resin, fermented_base, mineral, other
+- subcategory: use "liquid_base" for pourable smoothie bases (water, nut milks, coconut water, kefir). These are assigned stage liquid_base in recipes.
+- rarity_score: common, uncommon, rare, very_rare (or null)
+- entry_source_type: ai_generated (always)
+- entry_confidence: low, medium, high
+- verification_status: unverified (always)
+- evidence_tier (in claims): traditional_consensus, preliminary_research, established_research, conflicting_evidence
+- source_type (in claims): ai_generated (always)
+- confidence (in claims): low, medium, high
+
+JSON SCHEMA (return this structure exactly):
+{
+  "name": "string — canonical name",
+  "aliases": ["string"] or null,
+  "category": "enum",
+  "subcategory": "string or null",
+  "origin": ["string"] or null,
+  "traditions": ["string"] or null,
+  "flavour_profile": ["bitter|sweet|sour|astringent|pungent|umami|floral|earthy|smoky|salty"] or null,
+  "flavour_intensity": 1-5 or null,
+  "primary_terpene": "linalool|limonene|eugenol|bisabolol|geraniol|pinene|myrcene|caryophyllene|other" or null,
+  "secondary_terpenes": ["string"] or null,
+  "beverage_types": ["cold_press_juice|smoothie|hot_tea|cold_brew|tonic|infusion|fermented|decoction"] or null,
+  "health_properties": {
+    "traditional_claims": [
+      {
+        "claim": "string",
+        "tradition": "string",
+        "source_type": "ai_generated",
+        "source_reference": null,
+        "confidence": "low|medium|high"
+      }
+    ],
+    "evidence_based_claims": [
+      {
+        "claim": "string",
+        "evidence_tier": "traditional_consensus|preliminary_research|established_research|conflicting_evidence",
+        "source_type": "ai_generated",
+        "source_reference": null,
+        "confidence": "low|medium|high"
+      }
+    ]
+  },
+  "body_systems": ["gut|liver|nervous_system|immune|endocrine|cardiovascular|skin|lymphatic|respiratory|musculoskeletal|reproductive"] or null,
+  "active_compounds": ["string"] or null,
+  "bioavailability_notes": "string or null",
+  "preparation_notes": "string or null",
+  "contraindications": ["string"] or null,
+  "combination_contraindications": ["string"] or null,
+  "ratio_guidance": "string or null",
+  "rarity_score": "common|uncommon|rare|very_rare or null",
+  "sourcing_notes": "string or null",
+  "history": "string or null",
+  "personal_notes": "string or null",
+  "entry_source_type": "ai_generated",
+  "entry_confidence": "low|medium|high",
+  "verification_status": "unverified",
+  "verification_notes": null,
+  "last_verified_at": null
+}
+
+--- EXAMPLE 1: Well-known ingredient (Ginger) — appropriate confidence, several established claims ---
+
+{
+  "name": "Ginger (yellow/common)",
+  "aliases": ["Zingiber officinale", "Adrak"],
+  "category": "root",
+  "subcategory": "rhizome",
+  "origin": ["Southeast Asia", "India"],
+  "traditions": ["Ayurvedic", "TCM", "Traditional European herbalism"],
+  "flavour_profile": ["pungent", "warm", "earthy"],
+  "flavour_intensity": 4,
+  "primary_terpene": "other",
+  "secondary_terpenes": ["zingiberene", "beta-bisabolene"],
+  "beverage_types": ["hot_tea", "decoction", "cold_press_juice", "tonic"],
+  "health_properties": {
+    "traditional_claims": [
+      {
+        "claim": "Used as a digestive stimulant and carminative",
+        "tradition": "Ayurvedic",
+        "source_type": "ai_generated",
+        "source_reference": null,
+        "confidence": "high"
+      },
+      {
+        "claim": "Used to warm the body and dispel cold",
+        "tradition": "TCM",
+        "source_type": "ai_generated",
+        "source_reference": null,
+        "confidence": "medium"
+      }
+    ],
+    "evidence_based_claims": [
+      {
+        "claim": "Ginger reduces nausea and vomiting in pregnancy and chemotherapy contexts",
+        "evidence_tier": "established_research",
+        "source_type": "ai_generated",
+        "source_reference": null,
+        "confidence": "high"
+      },
+      {
+        "claim": "Anti-inflammatory effects via gingerol compounds",
+        "evidence_tier": "preliminary_research",
+        "source_type": "ai_generated",
+        "source_reference": null,
+        "confidence": "medium"
+      }
+    ]
+  },
+  "body_systems": ["gut", "immune", "musculoskeletal"],
+  "active_compounds": ["gingerols", "shogaols", "zingiberene"],
+  "bioavailability_notes": "Gingerols are relatively bioavailable when consumed fresh or as decoction; drying increases shogaol content.",
+  "preparation_notes": "Fresh ginger for juice/tea; dried or powdered for decoctions. Slice or grate before steeping.",
+  "contraindications": ["May increase bleeding risk at high doses with anticoagulants", "Use caution in gallstone disease"],
+  "combination_contraindications": [],
+  "ratio_guidance": "1-3g fresh ginger per 250ml tea; 500ml serving typically uses 2-6g",
+  "rarity_score": "common",
+  "sourcing_notes": "Widely available fresh at grocery stores; organic preferred for juice",
+  "history": "One of the earliest traded spices; foundational in Ayurvedic and Chinese materia medica.",
+  "personal_notes": null,
+  "entry_source_type": "ai_generated",
+  "entry_confidence": "high",
+  "verification_status": "unverified",
+  "verification_notes": null,
+  "last_verified_at": null
+}
+
+--- EXAMPLE 2: Obscure ingredient (Mamaki) — mostly null, low confidence, verification note ---
+
+{
+  "name": "Mamaki leaf",
+  "aliases": ["Pipturus albidus"],
+  "category": "herb",
+  "subcategory": null,
+  "origin": ["Hawaii"],
+  "traditions": ["Native Hawaiian"],
+  "flavour_profile": ["earthy"],
+  "flavour_intensity": null,
+  "primary_terpene": null,
+  "secondary_terpenes": null,
+  "beverage_types": ["hot_tea", "infusion"],
+  "health_properties": {
+    "traditional_claims": [
+      {
+        "claim": "Traditionally used as a general wellness tea in Native Hawaiian practice",
+        "tradition": "Native Hawaiian",
+        "source_type": "ai_generated",
+        "source_reference": null,
+        "confidence": "low"
+      }
+    ],
+    "evidence_based_claims": []
+  },
+  "body_systems": null,
+  "active_compounds": null,
+  "bioavailability_notes": null,
+  "preparation_notes": "Typically steeped as a leaf tea; specific preparation details need primary source verification.",
+  "contraindications": null,
+  "combination_contraindications": null,
+  "ratio_guidance": null,
+  "rarity_score": "rare",
+  "sourcing_notes": "Specialty Hawaiian botanical suppliers; not commonly available mainland.",
+  "history": null,
+  "personal_notes": "This entry needs verification from primary ethnobotanical sources. Most fields intentionally left sparse due to limited reliable documentation in training data.",
+  "entry_source_type": "ai_generated",
+  "entry_confidence": "low",
+  "verification_status": "unverified",
+  "verification_notes": null,
+  "last_verified_at": null
+}
+
+Now generate the JSON entry for this ingredient:
