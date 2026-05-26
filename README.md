@@ -1,8 +1,36 @@
 # Beverage Recipe & Knowledge Base
 
-A personal recipe and ingredient knowledge base for health-and-wellness beverages — juices, teas, tonics, infusions, cold brews, fermented drinks, and decoctions.
+A personal recipe and ingredient knowledge base for health-and-wellness beverages — cold-press juices, smoothies, teas, tonics, infusions, cold brews, fermented drinks, and decoctions.
+
+**Repository:** [github.com/babyteej/beverage-recipe-app](https://github.com/babyteej/beverage-recipe-app)
 
 The database is the product. AI-seeded entries live in an **unverified pool** until manually upgraded; the UI keeps verified and unverified data strictly separate.
+
+---
+
+## Current status
+
+| Area | Status |
+|------|--------|
+| Supabase schema + API | Live |
+| React frontend | Live (8 pages) |
+| AI ingredient seeding | Working (`pending_review/` → Supabase) |
+| Verification workflow | Working (queue + structured edit form) |
+| Combination engine | Working (anchor + goal modes) |
+| Smoothie support | Liquid-base pool + blend validation |
+| Beverage-type eligibility | Auto-tagged on seed; auditable via scripts |
+
+Ingredients are seeded in batches — review and verify entries as you use them. Full list target: ~550 names in `ingredients_to_seed.txt`.
+
+---
+
+## Stack
+
+- **Database:** Supabase (Postgres) — schema in `supabase/schema.sql`
+- **Backend:** FastAPI + Anthropic API (Sonnet for seeding, Haiku for combinations)
+- **Frontend:** React + TypeScript + Tailwind, Vite dev proxy to API
+
+No auth. Personal local app only.
 
 ---
 
@@ -10,42 +38,120 @@ The database is the product. AI-seeded entries live in an **unverified pool** un
 
 ```
 beverage-recipe-app/
-├── supabase/schema.sql          # Postgres schema (run in Supabase SQL editor)
+├── supabase/schema.sql              # Postgres schema (run in Supabase SQL editor)
 ├── backend/
-│   ├── app/                     # FastAPI application (step 3)
+│   ├── app/
+│   │   ├── main.py                  # FastAPI entry point
+│   │   ├── routers/                 # ingredients, recipes, combinations
+│   │   └── services/
+│   │       ├── anthropic_service.py
+│   │       ├── beverage_type_eligibility.py  # beverage_types + transform rules
+│   │       ├── combination_service.py
+│   │       └── ingredient_service.py
 │   ├── scripts/
-│   │   ├── seed_ingredients.py  # AI seeding → pending_review/
-│   │   └── commit_ingredients.py # pending_review/ → Supabase
-│   ├── prompts/seed_ingredient.txt
-│   ├── ingredients_to_seed.txt  # ~550 ingredients
-│   └── pending_review/          # Generated JSON awaiting commit
-└── frontend/                    # React + Tailwind (step 4)
+│   │   ├── seed_ingredients.py      # AI seeding → pending_review/
+│   │   ├── commit_ingredients.py    # pending_review/ → Supabase (insert only)
+│   │   ├── sync_pending_ingredients.py  # upsert pending_review/ by name
+│   │   ├── setup_smoothie_pool.py   # curated liquid bases + tag normalization
+│   │   └── audit_smoothie_eligibility.py  # audit/fix beverage_types tags
+│   ├── prompts/
+│   ├── ingredients_to_seed.txt      # ~550 ingredient names
+│   ├── ingredients_liquid_bases.txt
+│   ├── ingredients_dev_batch.txt
+│   └── pending_review/              # Generated JSON (gitignored)
+└── frontend/                        # React app
+    └── src/pages/                   # browser, detail, edit, verification, recipes, generator
 ```
 
 ---
 
-## Build progress
+## Quick start
 
-| Step | Status | Needs Supabase? |
-|------|--------|-----------------|
-| 1. Database schema | Done | No (file only) |
-| 2. Seeding scripts | Done | No (writes local JSON) |
-| 3. FastAPI backend + combination engine | Done | **Yes** |
-| 4. React frontend | Done | Yes (via API proxy) |
+### 1. Backend
+
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+```
+
+Edit `.env` with your keys (see [Environment variables](#environment-variables)).
+
+### 2. Supabase
+
+1. Create a project at [supabase.com](https://supabase.com)
+2. Run `supabase/schema.sql` in the **SQL Editor**
+3. Copy **Project URL** and **service role key** into `backend/.env`
+
+### 3. Seed and sync ingredients
+
+```bash
+# Seed locally (no Supabase needed)
+python scripts/seed_ingredients.py --limit 5 --concurrency 1
+
+# Insert new pending JSON into Supabase
+python scripts/commit_ingredients.py
+
+# Update existing rows from pending JSON (by ingredient name)
+python scripts/sync_pending_ingredients.py
+```
+
+### 4. Run the API
+
+```bash
+uvicorn app.main:app --reload --port 8000
+```
+
+Test: http://localhost:8000/health → `{"status":"ok"}`  
+Docs: http://localhost:8000/docs
+
+### 5. Run the frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open http://localhost:5173 — the dev server proxies `/api` to `http://127.0.0.1:8000`.
+
+---
+
+## Environment variables
+
+Copy `backend/.env.example` to `backend/.env`:
+
+| Variable | Required for | Description |
+|----------|--------------|-------------|
+| `ANTHROPIC_API_KEY` | Seeding + combinations | Anthropic API key |
+| `SUPABASE_URL` | API + scripts | Supabase project URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | API + scripts | Backend + commit scripts |
+| `SUPABASE_ANON_KEY` | Optional | Reserved for future frontend direct access |
+| `ANTHROPIC_MODEL` | Seeding | Default: `claude-sonnet-4-6` |
+| `COMBINATION_MODEL` | Generator | Default: `claude-haiku-4-5` (faster) |
+| `SEED_DELAY_SECONDS` | Seeding | Delay between API calls |
+
+**Never commit `.env`** — it is gitignored.
+
+---
+
+## Frontend pages
+
+| Route | Purpose |
+|-------|---------|
+| `/` | Ingredient browser (filters: category, verification, liquid-base pool) |
+| `/ingredients/:id` | Ingredient detail |
+| `/ingredients/:id/edit` | Upgrade / verify entry (structured form) |
+| `/verification` | Verification queue (sorted by recipe usage) |
+| `/combinations` | AI recipe generator (anchor or health-goal mode) |
+| `/recipes` | Saved recipes |
+| `/recipes/new` | Manual recipe builder (500ml yield) |
 
 ---
 
 ## API endpoints
-
-With Supabase configured, start the server:
-
-```bash
-cd backend
-source .venv/bin/activate
-uvicorn app.main:app --reload --port 8000
-```
-
-Interactive docs: http://localhost:8000/docs
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -64,139 +170,73 @@ Interactive docs: http://localhost:8000/docs
 
 ---
 
-## Setup — Phase 1 (no Supabase needed)
+## Beverage types
 
-You can seed ingredients locally before creating a Supabase project.
+Supported types: `cold_press_juice`, `smoothie`, `hot_tea`, `cold_brew`, `tonic`, `infusion`, `fermented`, `decoction`.
 
-### 1. Backend dependencies
+Each ingredient gets a `beverage_types` list based on its default preparation form (e.g. pea protein → smoothie only; fresh ginger → cold-press + tonic). Ingredients outside their default form can still appear when a **preparation transform** documents the change (e.g. powder stirred in at `finish` stage).
 
-```bash
-cd backend
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-### 2. Environment variables
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env` and add your **Anthropic API key** (required for seeding):
-
-```
-ANTHROPIC_API_KEY=sk-ant-...
-```
-
-Supabase keys can wait until Phase 2.
-
-### 3. Test seeding (start small)
-
-```bash
-# Seed a single ingredient to verify everything works
-python scripts/seed_ingredients.py --ingredient "Ginger (yellow/common)" --concurrency 1
-
-# Or seed the first 5 from the list
-python scripts/seed_ingredients.py --limit 5 --concurrency 1
-```
-
-Output lands in `backend/pending_review/*.json`. Review a file before running the full batch.
-
-### 4. Full batch (optional, ~550 ingredients)
-
-```bash
-python scripts/seed_ingredients.py --concurrency 3
-```
-
-The script is resumable — it skips ingredients that already have a JSON file in `pending_review/`. Failures are logged to `seed_errors.log`. A cost summary prints at the end.
+The combination engine validates formulations per beverage type (e.g. smoothies require a liquid base ≥80ml and blend ingredients).
 
 ---
 
-## Setup — Phase 2 (Supabase required)
+## Scripts reference
 
-**Create your Supabase project when you're ready to commit seeded data or run the API.**
+### `seed_ingredients.py`
 
-### 1. Create a Supabase project
-
-1. Go to [supabase.com](https://supabase.com) → **New project**
-2. Choose a region close to you
-3. Save your database password securely
-4. Wait for the project to finish provisioning (~2 minutes)
-
-### 2. Run the schema
-
-1. In Supabase: **SQL Editor** → **New query**
-2. Paste the contents of `supabase/schema.sql`
-3. Click **Run**
-
-### 3. Copy API keys to `.env`
-
-In Supabase: **Project Settings → API**
-
-```
-SUPABASE_URL=https://your-project-id.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=eyJ...   # for commit script + backend
-SUPABASE_ANON_KEY=eyJ...           # for frontend (later)
-```
-
-### 4. Commit seeded ingredients
+AI-seed ingredients from `ingredients_to_seed.txt` into `pending_review/*.json`. Resumable — skips names that already have a JSON file.
 
 ```bash
-# Validate without writing
-python scripts/commit_ingredients.py --dry-run
+python scripts/seed_ingredients.py --ingredient "Ginger (yellow/common)" --concurrency 1
+python scripts/seed_ingredients.py --limit 5
+python scripts/seed_ingredients.py --concurrency 3   # full batch (~550)
+```
 
-# Insert all pending_review/ entries as unverified
+Failures log to `seed_errors.log`. A token/cost summary prints at the end.
+
+### `commit_ingredients.py`
+
+Insert all `pending_review/` entries into Supabase as unverified. Skips names already in the database.
+
+```bash
+python scripts/commit_ingredients.py --dry-run
 python scripts/commit_ingredients.py
 ```
 
-### 5. Start the API
+### `sync_pending_ingredients.py`
+
+Upsert `pending_review/` JSON into Supabase **by ingredient name** — updates existing rows (e.g. after fixing `beverage_types` locally).
 
 ```bash
-uvicorn app.main:app --reload --port 8000
+python scripts/sync_pending_ingredients.py --dry-run
+python scripts/sync_pending_ingredients.py
 ```
 
-Test: http://localhost:8000/health → `{"status":"ok"}`
+### `setup_smoothie_pool.py`
 
----
-
-## ⏸ Supabase checkpoint — you are here
-
-The backend is built. To use it you need to:
-
-1. **Create a Supabase project** at [supabase.com](https://supabase.com)
-2. **Run** `supabase/schema.sql` in the SQL Editor
-3. **Add** `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` to `backend/.env`
-4. **Commit** seeded ingredients: `python scripts/commit_ingredients.py`
-5. **Start** the API: `uvicorn app.main:app --reload --port 8000`
-
-You can keep seeding more ingredients locally while setting up Supabase.
-
----
-
-## Frontend
+Write curated liquid-base ingredients (milks, protein shakes, broth, functional juices) to `pending_review/` and normalize smoothie eligibility tags.
 
 ```bash
-cd frontend
-npm install
-npm run dev
+python scripts/setup_smoothie_pool.py --dry-run
+python scripts/setup_smoothie_pool.py
 ```
 
-Open http://localhost:5173 — the dev server proxies API requests to the backend at `:8000`.
+### `audit_smoothie_eligibility.py`
 
-Make sure the backend is running:
+Audit or fix `beverage_types` across all pending JSON (and optionally sync to Supabase).
 
 ```bash
-cd backend
-source .venv/bin/activate
-uvicorn app.main:app --reload --port 8000
+python scripts/audit_smoothie_eligibility.py
+python scripts/audit_smoothie_eligibility.py --fix
+python scripts/audit_smoothie_eligibility.py --fix --sync
 ```
 
 ---
 
 ## Design principles
 
-- **Two-tier data model:** verified/partially_verified vs unverified — never blurred in the UI
+- **Two-tier data model:** verified / partially_verified vs unverified — never blurred in the UI
 - **Conservative AI seeding:** null over guess; every claim tagged `ai_generated` until manually upgraded
 - **500ml canonical yield:** all recipes standardized; scaling is display-only
+- **Preparation-aware eligibility:** beverage types reflect how an ingredient is actually used, with documented transforms when needed
 - **No auth, no deployment:** personal local app only
